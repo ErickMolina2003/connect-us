@@ -1,12 +1,13 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import MainLayout from "@/components/layouts/main-layout.vue";
+import LogIn from "@/components/log-in.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
+    path: "/proyectos",
     name: "MainLayout",
     component: MainLayout,
     children: [
@@ -26,6 +27,11 @@ const routes: Array<RouteConfig> = [
         component: () => import("@/components/detalle-proyecto.vue"),
       },
     ],
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: LogIn,
   },
 ];
 

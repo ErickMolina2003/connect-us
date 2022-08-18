@@ -15,15 +15,20 @@
                 lg="12"
                 md="12"
                 cols="12"
+                v-for="ticket in proyectoTickets"
+                :key="ticket.id_ticket"
               >
                 <v-row justify="space-around">
                   <v-col cols="8" md="8" lg="8">
                     <v-row>
                       <v-col cols="12" md="12" lg="12">
-                        <h4>SideBar 1 - Create component for main sidebar</h4>
+                        <h4>{{ ticket.nombre_ticket }}</h4>
                       </v-col>
                       <v-col cols="12" md="12" lg="12">
-                        <h4>12h - Por hacer</h4>
+                        <h4>
+                          {{ new Date(ticket.tiempo_ticket).getMinutes() }}h -
+                          {{ ticket.estado }}
+                        </h4>
                       </v-col>
                     </v-row>
                   </v-col>
@@ -46,7 +51,7 @@
                             lg="4"
                             class="pl-0"
                           >
-                            <h4>1110</h4>
+                            <h4>{{ ticket.id_ticket }}</h4>
                           </v-col>
                         </v-row>
                       </v-col>
@@ -58,7 +63,9 @@
                             >
                           </v-col>
                           <v-col cols="4" md="4" lg="4" class="pl-1">
-                            <h4>12h</h4>
+                            <h4>
+                              {{ new Date(ticket.tiempo_ticket).getMinutes() }}h
+                            </h4>
                           </v-col>
                         </v-row>
                       </v-col>
@@ -73,8 +80,14 @@
         <v-tab-item>
           <v-card color="var(--v-primary-darken4)" dark flat>
             <v-row class="pt-4" justify="space-around">
-
-              <v-col class="miembro-container mb-4" lg="5" md="5" cols="5">
+              <v-col
+                class="miembro-container mb-4"
+                lg="5"
+                md="5"
+                cols="5"
+                v-for="miembro in proyectoMiembros"
+                :key="miembro.id"
+              >
                 <v-row>
                   <v-col lg="4" md="4" cols="4" class="mb-2">
                     <v-img
@@ -88,18 +101,22 @@
                   <v-col lg="6" md="6" cols="6">
                     <v-row>
                       <v-col cols="12" md="12" lg="12">
-                        <h3>Erick Molina (eralejo2003@gmail.com)</h3>
+                        <h3>
+                          {{ miembro.nombre }} {{ miembro.apellido }} ({{
+                            miembro.correo
+                          }})
+                        </h3>
                       </v-col>
                       <v-col cols="12" md="12" lg="12">
-                        <h3>Jr. Front-end developer</h3>
+                        <h3>{{ miembro.rol }}</h3>
                       </v-col>
                       <v-col cols="12" md="12" lg="12">
-                        <h3>69 tickets</h3>
+                        <h3>{{ miembro.total_tickets }} tickets</h3>
                       </v-col>
                     </v-row>
                   </v-col>
                 </v-row>
-              </v-col>              
+              </v-col>
             </v-row>
           </v-card>
         </v-tab-item>
@@ -110,14 +127,43 @@
 
 <script lang="ts">
 import Vue from "vue";
+import axios from "axios";
 import { Component } from "vue-property-decorator";
 
 @Component({
   name: "UsuarioCuenta",
 })
 class UsuarioCuenta extends Vue {
-  text = "moremdsamdsa";
   tabs = null;
+
+  proyectoId = 0;
+
+  proyectoTickets = [];
+
+  proyectoMiembros = [];
+
+  async mounted() {
+    console.log(this.$route.params);
+    this.proyectoId = parseInt(this.$route.params.pathMatch);
+
+    console.log(this.proyectoId);
+
+    const responseTickets = await axios({
+      method: "GET",
+      url: `http://localhost:3000/proyecto/${this.proyectoId}/tickets`,
+      responseType: "json",
+    });
+
+    const responseMiembros = await axios({
+      method: "GET",
+      url: `http://localhost:3000/proyecto/${this.proyectoId}/miembros`,
+      responseType: "json",
+    });
+    console.log(new Date(responseTickets.data[0].tiempo_ticket).getMinutes());
+
+    this.proyectoTickets = responseTickets.data;
+    this.proyectoMiembros = responseMiembros.data;
+  }
 }
 
 export default UsuarioCuenta;
