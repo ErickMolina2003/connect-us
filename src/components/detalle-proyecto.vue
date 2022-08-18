@@ -19,7 +19,7 @@
                 :key="ticket.id_ticket"
               >
                 <v-row justify="space-around">
-                  <v-col cols="8" md="8" lg="8">
+                  <v-col cols="7" md="7" lg="7">
                     <v-row>
                       <v-col cols="12" md="12" lg="12">
                         <h4>{{ ticket.nombre_ticket }}</h4>
@@ -33,7 +33,7 @@
                     </v-row>
                   </v-col>
 
-                  <v-col cols="3" md="3" lg="3" align-self="center">
+                  <v-col cols="4" md="4" lg="4" align-self="center">
                     <v-row>
                       <v-col>
                         <v-row justify="end">
@@ -66,6 +66,20 @@
                             <h4>
                               {{ new Date(ticket.tiempo_ticket).getMinutes() }}h
                             </h4>
+                          </v-col>
+                          <v-col cols="3" md="3" lg="3" class="pl-1">
+                            <v-icon
+                              class="red--text"
+                              @click="deleteTicket(ticket.id_ticket)"
+                              >mdi-delete</v-icon
+                            >
+                          </v-col>
+                          <v-col cols="3" md="3" lg="3" class="pl-1">
+                            <v-icon
+                              color="var(--v-success-base)"
+                              @click="edit(ticket.id_ticket)"
+                              >mdi-pencil</v-icon
+                            >
                           </v-col>
                         </v-row>
                       </v-col>
@@ -143,10 +157,7 @@ class UsuarioCuenta extends Vue {
   proyectoMiembros = [];
 
   async mounted() {
-    console.log(this.$route.params);
     this.proyectoId = parseInt(this.$route.params.pathMatch);
-
-    console.log(this.proyectoId);
 
     const responseTickets = await axios({
       method: "GET",
@@ -159,10 +170,17 @@ class UsuarioCuenta extends Vue {
       url: `http://localhost:3000/proyecto/${this.proyectoId}/miembros`,
       responseType: "json",
     });
-    console.log(new Date(responseTickets.data[0].tiempo_ticket).getMinutes());
 
     this.proyectoTickets = responseTickets.data;
     this.proyectoMiembros = responseMiembros.data;
+  }
+
+  deleteTicket(idTicket: number) {
+    console.log(idTicket);
+  }
+
+  edit(idTicket: number) {
+    console.log(idTicket);
   }
 }
 

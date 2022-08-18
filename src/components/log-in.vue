@@ -105,14 +105,14 @@ export default class Login extends Vue {
         url: `http://localhost:3000/empleados/${this.correo}/${this.password}`,
         responseType: "json",
       });
-      console.log(response.data);
       if (!response.data) {
         this.correo = "";
         this.password = "";
         alert("Ingrese credenciales validas");
         return;
       }
-      this.$router.push("/proyectos");
+      window.localStorage.setItem("idEmpleado", response.data.id);
+      this.$router.push("/ticket");
     } else {
       alert("Ingrese un usuario y contrasena validos");
     }

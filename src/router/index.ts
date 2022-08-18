@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import MainLayout from "@/components/layouts/main-layout.vue";
 import LogIn from "@/components/log-in.vue";
+import TicketsComponent from "@/components/tickets-component.vue";
 
 Vue.use(VueRouter);
 
@@ -26,10 +27,15 @@ const routes: Array<RouteConfig> = [
         name: "detalle",
         component: () => import("@/components/detalle-proyecto.vue"),
       },
+      {
+        path: "/ticket",
+        name: "ticket",
+        component: TicketsComponent,
+      },
     ],
   },
   {
-    path: "/login",
+    path: "/",
     name: "login",
     component: LogIn,
   },

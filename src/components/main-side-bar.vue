@@ -53,7 +53,7 @@
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title class="error--text base--text"
+          <v-list-item-title class="error--text base--text" @click="logOut"
             >Salir</v-list-item-title
           >
         </v-list-item-content>
@@ -75,7 +75,7 @@ export default class MainSideBar extends Vue {
     {
       title: "Mis Tickets",
       icon: "mdi-ticket",
-      to: "/tickets",
+      to: "/ticket",
       color: "white--text",
     },
     {
@@ -97,6 +97,11 @@ export default class MainSideBar extends Vue {
 
       i == item ? (i.color = "success--text text--base") : "";
     });
+  }
+
+  logOut() {
+    window.localStorage.clear();
+    this.$router.push("/");
   }
 }
 </script>
